@@ -1,0 +1,242 @@
+.division1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 50px 20%;
+    border-radius: 50px;
+    background: #ffffff;
+
+    transition: all 0.25s ease-in-out;
+
+}
+
+.barraPrincipal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    height: 50px;
+    margin: 50px 20%;
+    border-radius: 50px;
+    background: #ffffff;
+
+    transition: all 0.25s ease-in-out;
+    overflow: hidden;
+
+}
+
+#agregarDatos {
+    margin: 0px;
+    background-color: white;
+    padding: 10px 0px;
+    border: transparent;
+    border-radius: 10px;
+    transition: all 0.25s ease-in-out;
+}
+
+input[type="button"]:hover {
+
+
+
+    cursor: pointer;
+    font-weight: 500;
+    font-size: x-large;
+    color: #0a5d08;
+}
+
+* {
+    font-family: Helvetica, sans-serif
+}
+
+.division1>* {
+
+    color: #535353;
+    border: none;
+    border-radius: 50px;
+    width: 100%;
+    height: 100px;
+    background-color: white;
+    transition: all 0.25s ease-in-out;
+
+}
+
+
+div:hover {
+    box-shadow: 0px 0px 30px 1px rgb(255, 255, 255);
+    color: rgb(33, 23, 86);
+
+}
+
+table,
+td,
+th {
+    border: 1px solid rgba(0, 255, 117, 0.30);
+    border-collapse: collapse;
+    border-radius: 5px;
+    transition: all 0.25s ease-in-out;
+}
+
+table:hover,
+td:hover,
+th:hover {
+    border: 5px solid;
+    border-color: rgba(0, 255, 117, 0.30);
+
+}
+
+td:hover {
+    background-color: rgba(14, 252, 101, 0.156);
+
+    box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.30);
+
+
+}
+
+.division2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 20%;
+    border-radius: 50px;
+    background: #ffffff;
+    height: 100px;
+    transition: all 0.25s ease-in-out;
+}
+#labelTabla{
+    margin: 0px;
+    padding: 0px;
+}
+#campos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 20%;
+    border-radius: 50px;
+    background: #ffffff;
+
+    transition: all 0.25s ease-in-out;
+}
+
+.divTabla {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 20%;
+    border-radius: 50px;
+    background: #ffffff;
+
+    transition: all 0.25s ease-in-out;
+}
+
+
+
+/*  
+.botonAgregado {
+    color: rgb(0, 0, 0);
+    border: 1px solid;
+    border-radius: 5px;
+    border-collapse: collapse;
+    transition: all 0.5s ease-in-out;
+}
+
+.botonAgregado:hover {
+    background-color: rgb(245, 12, 12);
+    color: rgb(255, 255, 255);
+}
+*/
+
+#tablaDeDatos {
+    margin: 25px 100px;
+
+}
+
+
+/* From uiverse.io */
+button {
+    width: 150px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: red;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    background: #e62222;
+}
+
+button,
+button span {
+    transition: 200ms;
+}
+
+button .text {
+    transform: translateX(35px);
+    color: white;
+    font-weight: bold;
+}
+
+button .icon {
+    position: absolute;
+    border-left: 1px solid #c41b1b;
+    transform: translateX(110px);
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button svg {
+    width: 15px;
+    fill: #eee;
+}
+
+button:hover {
+    background: #ff3636;
+}
+
+button:hover .text {
+    color: transparent;
+}
+
+button:hover .icon {
+    width: 150px;
+    border-left: none;
+    transform: translateX(0);
+}
+
+button:focus {
+    outline: none;
+}
+
+button:active .icon svg {
+    transform: scale(0.8);
+}
+
+@media screen and (max-width: 992px) {
+    .barraPrincipal {
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+        overflow: visible;
+        height: auto;
+    }
+
+    .divTabla {
+        width: auto;
+    }
+
+    #balanzaAInsertar {
+        border-radius: 5px;
+        border: 2px solid rgba(0, 255, 117, 0.30);
+        ;
+    }
+
+    #balanzaAInsertar::placeholder {
+        text-align: center;
+    }
+
+
+}

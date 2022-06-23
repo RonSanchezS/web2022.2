@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="cssRead.css">
+    <link rel="stylesheet" href="cssReadBG.css">
+    <script src="renderer.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="actualizarCombobox()">
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+    <div class="division1">
+        <input type="button" id="input" value="Obtener datos">
+    </div>
+
+    <div class="barraPrincipal">
+        <input type="button" id="agregarDatos" value="Insertar tabla">
+        <input type="text" id="balanzaAInsertar" placeholder="Balanza a insertar">
+        <label for="seleccionDeTabla" id="labelTabla">Tabla a usarse:</label>
+        <select name="seleccionDeTabla" id="seleccionDeTabla">
+        </select>
+    </div>
+    <div id="campos">
+    </div>
+
+
+
+
+    <div class="divTabla">
+        <table id="tablaDeDatos">
+        
+        </table>
+    </div>
+
+
+
+    <script>
+        var nombreBalanza = document.getElementById("balanzaAInsertar");
+
+        //  var tablaSeleccionada = comboBox.options[comboBox.selectedIndex].text;
+        var input = document.getElementById("input");
+        var datos = document.getElementById("agregarDatos");
+        var tabla = document.getElementById("tablaDeDatos");
+
+        function actualizarCombobox() {
+            var comboBox = document.getElementById("seleccionDeTabla");
+            var mysql = require("mysql");
+            //aqui se crea la conexion
+            var connection = mysql.createConnection({
+                host: "localhost",
+                user: "root",
+                password: "root",
+                database: "electronDB"
+            });
+            //En este pedazo de codigo se conecta a la base de datos
+            connection.connect(function (err) {
+                if (err) {
+                    console.error("error connecting: " + err.stack);
+                    return;
+                }
+
+            });
+
+            //En este pedazo de codigo se hace la consulta
+            $queryString = 'show tables';
+            connection.query($queryString, function (err, rows, fields) {
+                if (err) {
+                    console.log("error: " + err);
+                } else {
+
+
+                    console.log("success");
+                    const result = Object.values(JSON.parse(JSON.stringify(rows)));
+                    result.forEach(function (v) {
+                        console.log(v);
+                        var option = document.createElement("option");
+                        option.text = v.Tables_in_electrondb;
+                        comboBox.add(option);
+                    }
+
+
+                    );
+
+
+                }
+            });
+
+
+            //En este pedazo de codigo se cierra la conexion
+            connection.end(() => {
+                console.log("connection closed");
+            });
+
+        }
+
+
+
+        datos.addEventListener("click", function () {
+            insertBD();
+        }, false);
+
+
+        input.addEventListener("click", () => {
+            crearInputs();
+            actualizarLista();
+        });
+
+        function actualizarLista() {
+            var comboBox = document.getElementById("seleccionDeTabla");
+            var tablaSeleccionada = comboBox.options[comboBox.selectedIndex].text;
+            var tabla = document.getElementById("tablaDeDatos");
+            tabla.innerHTML = "";
+            var mysql = require("mysql");
+            //aqui se crea la conexion
+            var connection = mysql.createConnection({
+                host: "localhost",
+                user: "root",
+                password: "root",
+                database: "electronDB"
+            });
+            //En este pedazo de codigo se conecta a la base de datos
+            connection.connect(function (err) {
+                if (err) {
+                    console.error("error connecting: " + err.stack);
+                    return;
+                }
+
+            });
+
+            //En este pedazo de codigo se hace la consulta
+            $queryString = 'SELECT * FROM ' + tablaSeleccionada;
+            connection.query($queryString, function (err, rows, fields) {
+                if (err) {
+                    console.log("error: " + err);
+                } else {
+                    //creamos los nodos
+                    var tr = document.createElement("tr");
+                    var td1 = document.createElement("td");
+                    var td2 = document.createElement("td");
+
+
+                    var botonAgregado = document.createElement("button");
+                    //Seleccionamos el elemento padre
+                    var padre = document.getElementById("tablaDeDatos");
+                    //Agregamos los nodos al elemento padre
+                    padre.appendChild(tr);
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    td1.innerHTML = "ID BALANZA";
+                    td2.innerHTML = "NOMBRE BALANZA";
+
+                    console.log("success");
+                    const result = Object.values(JSON.parse(JSON.stringify(rows)));
+                    result.forEach(function (v) {
+                        console.log(v.nombre),
+                            insertarBalanza(v.idBalanza, v.nombre)
+                    }
+
+
+                    );
+
+
+                }
+            });
+
+
+            //En este pedazo de codigo se cierra la conexion
+            connection.end(() => {
+                console.log("connection closed");
+            });
+        }
+
+
+
+        function insertarBalanza(id, nombre) {
+            //creamos los nodos
+            var tr = document.createElement("tr");
+            var td1 = document.createElement("td");
+            var td2 = document.createElement("td");
+            var td3 = document.createElement("td");
+
+            var botonAgregado = document.createElement("button");
+            botonAgregado.classList.add("botonAgregado");
+            //Seleccionamos el elemento padre
+            var padre = document.getElementById("tablaDeDatos");
+            //Agregamos los nodos al elemento padre
+            padre.appendChild(tr);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+
+            td3.appendChild(botonAgregado);
+            //botonAgregado.innerText = "Eliminar";
+            botonAgregado.innerHTML = `<button class="noselect"><span class="text">Delete</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>`;
+            botonAgregado.onclick = function () {
+                eliminarBalanza(id);
+            };
+            //Agregamos los datos
+            td1.innerHTML = id;
+            td2.innerHTML = nombre;
+        }
+        function eliminarBalanza(id) {
+            var mysql = require("mysql");
+            //aqui se crea la conexion
+            var connection = mysql.createConnection({
+                host: "localhost",
+                user: "root",
+                password: "root",
+                database: "electronDB"
+            });
+            //En este pedazo de codigo se conecta a la base de datos
+            connection.connect(function (err) {
+                if (err) {
+                    console.error("error connecting: " + err.stack);
+                    return;
+                }
+
+            });
+
+            //En este pedazo de codigo se hace la consulta
+            $queryString = 'delete from balanzas where idBalanza = ' + id;
+
+            connection.query($queryString, function (err, rows, fields) {
+                if (err) {
+                    console.log("error: " + err);
+                } else {
+                    console.log("success");
+                    alert("Se elimino la balanza" + id); 4
+                    actualizarLista();
+                }
+            });
+
+
+
+        }
+        function crearInputs() {
+            var mysql = require("mysql");
+            //aqui se crea la conexion
+            var connection = mysql.createConnection({
+                host: "localhost",
+                user: "root",
+                password: "root",
+                database: "electronDB"
+            });
+            //En este pedazo de codigo se conecta a la base de datos
+            connection.connect(function (err) {
+                if (err) {
+                    console.error("error connecting: " + err.stack);
+                    return;
+                }
+
+            });
+            var comboBox = document.getElementById("seleccionDeTabla");
+            var tabla = comboBox.options[comboBox.selectedIndex].text;
+
+            var contenedor = document.getElementById("campos");
+
+            $queryString = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA. COLUMNS WHERE table_schema = 'electrondb' AND table_name = '" + tabla + "'";
+            connection.query($queryString, function (err, rows, fields) {
+                if (err) {
+                    console.log("error: " + err);
+                } else {
+                    console.log("success");
+                    const result = Object.values(JSON.parse(JSON.stringify(rows)));
+                    var html = "";
+                    result.forEach(function (v) {
+                        //INGRESAR AQUI EL CODIGO DE CREACION DE INPUTS
+                        html += `<input type="text" value="${v.COLUMN_NAME}">`;
+                        console.log((v));
+                    }
+                    );
+
+
+                }
+                contenedor.innerHTML = "" + html;
+
+            });
+
+            //En este pedazo de codigo se cierra la conexion
+            connection.end(() => {
+                console.log("connection closed");
+            });
+
+
+        }
+        function insertBD() {
+            if (nombreBalanza.value == "") {
+                alert("Debe ingresar un nombre para la balanza");
+                nombreBalanza.focus();
+                return false;
+            } else {
+                var mysql = require("mysql");
+                //aqui se crea la conexion
+                var connection = mysql.createConnection({
+                    host: "localhost",
+                    user: "root",
+                    password: "root",
+                    database: "electronDB"
+                });
+                //En este pedazo de codigo se conecta a la base de datos
+                connection.connect(function (err) {
+                    if (err) {
+                        console.error("error connecting: " + err.stack);
+                        return;
+                    }
+
+                });
+                var comboBox = document.getElementById("seleccionDeTabla");
+                var tabla = comboBox.options[comboBox.selectedIndex].value;
+                $queryString = 'INSERT INTO ' + tabla + ' VALUES (default, "' + nombreBalanza.value + '")';
+                connection.query($queryString, function (err, rows, fields) {
+                    if (err) {
+                        console.log("error: " + err);
+                    } else {
+                        console.log("success");
+                        alert("Se agrego la balanza");
+                        actualizarLista();
+
+                    }
+                });
+                //En este pedazo de codigo se cierra la conexion
+                connection.end(() => {
+                    console.log("connection closed");
+                });
+
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
